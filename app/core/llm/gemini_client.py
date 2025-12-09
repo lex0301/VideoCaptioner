@@ -137,7 +137,7 @@ def call_gemini(
     if model_name == "gemini-2.5-flash":
         thinking_config = types.ThinkingConfig(thinking_budget = 0)
     elif model_name == "gemini-3-pro-preview" or model_name == "gemini-pro-latest":
-        thinking_config = types.ThinkingConfig(thinking_level = types.ThinkingLevel.HIGH)
+        thinking_config = types.ThinkingConfig(thinking_level = "HIGH")
     else:
         thinking_config = types.ThinkingConfig(thinking_budget = -1)
     response = client.models.generate_content(
