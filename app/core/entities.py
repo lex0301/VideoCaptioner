@@ -145,6 +145,10 @@ class VadMethodEnum(Enum):
     PYANNOTE_ONNX_V3 = "pyannote_onnx_v3"  # pyannote_v3 的轻量版。与 Silero v4 的准确性相似，可能稍好，支持 CUDA
     WEBRTC = "webrtc"  # 准确性低，过时的 VAD。仅接受 'vad_min_speech_duration_ms' 和 'vad_speech_pad_ms'
     AUDITOK = "auditok"  # 实际上这不是 VAD，而是 AAD - 音频活动检测
+    SILERO_V6_FW = "silero_v6_fw" 
+    SILERO_V6 = "silero_v6" 
+    NEMO_V2 = "nemo_v2" 
+    TEN = "ten"
 
 
 class SubtitleLayoutEnum(Enum):

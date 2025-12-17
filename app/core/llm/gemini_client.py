@@ -117,7 +117,7 @@ def call_gemini(
     client = genai.Client(
         api_key=api_key,
         http_options=types.HttpOptions(
-            timeout=5 * 60 * 1000,
+            timeout=3 * 60 * 1000,
             retry_options=types.HttpRetryOptions(
                 attempts=5,
                 initial_delay=30,
@@ -136,10 +136,10 @@ def call_gemini(
     model_name = re.sub(r"models/", "", model, 0, re.MULTILINE)
     if model_name == "gemini-2.5-flash":
         thinking_config = types.ThinkingConfig(thinking_budget = 0)
-    elif model_name == "gemini-3-pro-preview" or model_name == "gemini-pro-latest":
-        thinking_config = types.ThinkingConfig(thinking_level = "HIGH")
-    else:
+    elif model_name == "gemini-2.5-pro":
         thinking_config = types.ThinkingConfig(thinking_budget = -1)
+    else:
+        thinking_config = types.ThinkingConfig(thinking_level = "high")
     response = client.models.generate_content(
         model=model,
         config=types.GenerateContentConfig(

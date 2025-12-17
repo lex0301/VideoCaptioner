@@ -36,7 +36,7 @@ class FasterWhisperASR(BaseASR):
         output_dir: Optional[str] = None,
         output_format: str = "srt",
         use_cache: bool = False,
-        need_word_time_stamp: bool = False,
+        need_word_time_stamp: bool = True,
         # VAD 相关参数
         vad_filter: bool = True,
         vad_threshold: float = 0.4,
@@ -44,7 +44,7 @@ class FasterWhisperASR(BaseASR):
         # 音频处理
         ff_mdx_kim2: bool = False,
         # 文本处理参数
-        one_word: int = 0,
+        one_word: int = 1,
         sentence: bool = False,
         max_line_width: int = 100,
         max_line_count: int = 1,
@@ -85,7 +85,7 @@ class FasterWhisperASR(BaseASR):
 
         # 断句宽度
         if self.language in ["zh", "ja", "ko"]:
-            self.max_line_width = 30
+            self.max_line_width = 32
         else:
             self.max_line_width = 90
 
@@ -164,7 +164,8 @@ class FasterWhisperASR(BaseASR):
         if self.ff_mdx_kim2 and self.faster_whisper_program.startswith(
             "faster-whisper-xxl"
         ):
-            cmd.append("--ff_mdx_kim2")
+            # cmd.append("--ff_mdx_kim2")
+            cmd.extend(["--ff_vocal_extract", "mb-roformer"])
 
         # 文本处理参数
         if self.one_word:
@@ -198,7 +199,15 @@ class FasterWhisperASR(BaseASR):
 
         # 检测 50 系显卡，添加 compute_type 参数
         if is_rtx_50_series():
-            cmd.extend(["--compute_type", "float16"])
+            cmd.extend(["--compute_type", "float32"])
+            
+        # 指定用於 CPU 推理的執行緒數。
+        cmd.extend(["--threads", str(os.cpu_count())])
+        # cmd.extend(["--threads", "8"])
+        # hallucination_silence_threshold参数 幻覺靜音閾值
+        cmd.extend(["--hallucination_silence_threshold", "2"])
+        # srt 對齊時間戳
+        cmd.extend(["--realign"])
 
         return cmd
 

@@ -154,7 +154,7 @@ def _create_faster_whisper_asr(audio_path: str, config: TranscribeConfig) -> Chu
         audio_path=audio_path,
         asr_kwargs=asr_kwargs,
         chunk_concurrency=1,  # 本地转录使用单线程
-        chunk_length=60 * 20,  # 每块20分钟
+        chunk_length=60 * 60 * 24,  # 每块20分钟
     )
 
 
